@@ -1,0 +1,74 @@
+<% layout('layout/boilerplate') %>
+    <div class="row">
+        <div class="col">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">
+                        <%= spot.title %>
+                    </h5>
+                    <img src="<%= spot.image %> " class="card-img mb-3" alt="...">
+                    <p class="card-text">
+                        <%= spot.description %>
+                    </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <%= spot.location %>
+                    </li>
+                    <li class="list-group-item">
+                        <%= spot.author.username %>
+                    </li>
+                    <li class="list-group-item">$<%= spot.price %>
+                    </li>
+                </ul>
+                <% if(currentUser && spot.author.equals(currentUser._id)){ %> 
+                <div class="card-body">
+                    <a class="card-link btn btn-warning" href="/spots/<%= spot._id %>/edit">Edit</a>
+                    <form class="d-inline" action="/spots/<%=spot._id%>?_method=DELETE" method="POST">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                    
+                </div>
+                <% } %>
+                <a href="/spots">All Spots</a> 
+            </div>
+            <% if(currentUser){ %> 
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h4 class="card-title">Leave your thoughts</h4>
+                </div>
+                <div class="card-body">
+                    <form action="/spots/<%= spot._id %>/thoughts" method="POST" novalidate class="validate-form">
+                        <div class="mb-3">
+                            <label class="form-label" for="rating">Rating</label>
+                            <input class="form-range" type="range" min="1" max="5" name="thought[rating]" id="rating"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="body">Thoughts</label>
+                            <input class="form-control" type="text" name="thought[body]" id="body" required>
+                        </div>
+                        <button class="btn btn-success">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <% } %> 
+            <% for(let thought of spot.thoughts) { %>
+                <div class="card mb-3 ">
+                    <div class="card-body">
+                        <h5 class="card-title">Rating: <%= thought.rating %>
+                        </h5>
+                        <h6 class="card-subtitle mb-2 text-muted"> <%= thought.author.username%></h6>
+                        <p class="card-text">Review: <%= thought.body %>
+                        </p>
+<% if(currentUser && thought.author.equals(currentUser._id)){ %>
+                        <form action="/spots/<%=spot._id%>/thoughts/<%=thought._id%>?_method=DELETE" method="POST">
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                        <% } %> 
+                    </div>
+                </div>
+                <% } %>
+        </div>
+    </div>
+    <script src="/scripts/validateForms.js"></script>

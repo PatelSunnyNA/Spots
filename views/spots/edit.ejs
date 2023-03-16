@@ -1,0 +1,39 @@
+<% layout('layout/boilerplate') %> 
+    <div class="row">
+        <h1 class="text-center">Update Spot</h1>
+        <div class="col-6 offset-3">
+            <form action="/spots/<%= spot._id %>?_method=PUT" method="POST" novalidate class="validate-form">
+                <div class="mb-3">
+                    <label class="form-label" for="title">Title</label>
+                    <input class="form-control" type="text" name="spot[title]" id="title" value="<%= spot.title %>" required>
+
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="location">Location</label>
+                    <input class="form-control" type="text" name="spot[location]" id="location" value="<%= spot.location %>" required>
+
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="price">$</span>
+                    <input type="text" class="form-control" id="price" placeholder="0.00" aria-label="Username" name="spot[price]" value="<%= spot.price %>" required>
+                        
+                </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="description">Description</label>
+                    <textarea class="form-control" type="text" name="spot[description]" id="description" required><%= spot.description %> </textarea>
+
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="image">Image URL</label>
+                    <input class="form-control" type="text" name="spot[image]" id="image" value="<%= spot.image %>" required>
+
+                </div> <button class="btn btn-info mb-3">Update Spot</button>
+                <a href="/spots/<%= spot._id %>">Cancel</a>
+            </form>
+        </div>
+    </div>
+
+<script src="/scripts/validateForms.js"></script>
